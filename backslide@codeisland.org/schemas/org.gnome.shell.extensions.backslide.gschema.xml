@@ -23,5 +23,10 @@
             <summary>Minutes elapsed from the last delay.</summary>
             <description>The minutes already elapsed from the last delay-interval.</description>
         </key>
+	<key name="image-index" type="i">
+            <default>0</default>
+            <summary>Current image index.</summary>
+            <description>The image-list array index of current background.</description>
+        </key>
     </schema>
 </schemalist>

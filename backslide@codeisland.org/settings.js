@@ -7,6 +7,7 @@ const KEY_RANDOM = "random";
 const KEY_IMAGE_LIST = "image-list";
 const KEY_WALLPAPER = "picture-uri";
 const KEY_ELAPSED_TIME = "elapsed-time";
+const KEY_IMAGE_INDEX = "image-index";
 /**
  * This class takes care of reading/writing the settings from/to the GSettings backend.
  * @type {Lang.Class}
@@ -217,6 +218,27 @@ const Settings = new Lang.Class({
         // Write:
         if (this._setting.is_writable(KEY_ELAPSED_TIME)){
             if (this._setting.set_int(KEY_ELAPSED_TIME, time)){
+                Gio.Settings.sync();
+            } else {
+                throw this._errorSet(key);
+            }
+        } else {
+            throw this._errorWritable(key);
+        }
+    },
+
+    getImageIndex: function(){
+        return this._setting.get_int(KEY_IMAGE_INDEX);
+    },
+
+    setImageIndex: function(index){
+	// Validate:
+        if (index === undefined || index === null || typeof index != "number" || index < 0){
+            throw TypeError("'index' needs to be a number, greater than 0. Given: "+index);
+        }
+        // Write:
+        if (this._setting.is_writable(KEY_IMAGE_INDEX)){
+            if (this._setting.set_int(KEY_IMAGE_INDEX, index)){
                 Gio.Settings.sync();
             } else {
                 throw this._errorSet(key);

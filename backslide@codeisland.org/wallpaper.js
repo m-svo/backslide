@@ -21,6 +21,7 @@ const Wallpaper = new Lang.Class({
     _image_queue: [],
     _is_random: false,
     _preview_callback: null,
+    _list_size: 0,
 
     /**
      * Constructs a new class to do all the wallpaper-related work.
@@ -69,6 +70,7 @@ const Wallpaper = new Lang.Class({
      */
     _loadQueue: function(){
         let list = this._settings.getImageList();
+	this._list_size = list.length;
         // Add current if empty:
         if (list.length === 0){
             list.push( this._settings.getWallpaper() );
@@ -83,6 +85,12 @@ const Wallpaper = new Lang.Class({
                 list.push(duplicate);
             }
         }
+	// Set the list so that first wallpaper is the last loaded:
+	let image_index = this._settings.getImageIndex();
+	for (i = 0; i <= image_index; i++) {
+	    let image = list.shift();
+	    list.push(image);
+	}
         // Append to queue:
         for (let i in list){
             this._image_queue.push(list[i]);
@@ -164,6 +172,9 @@ const Wallpaper = new Lang.Class({
      * Slide to the next wallpaper in the list.
      */
     next: function(){
+	// Update image_index:
+	let image_index = this._settings.getImageIndex();
+	this._settings.setImageIndex((image_index + 1) % this._list_size);
         // Check if there where any items left in the stack:
         if (this._image_queue.length <= 2){
             this._loadQueue(); // Load new wallpapers
