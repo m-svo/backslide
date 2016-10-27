@@ -83,10 +83,10 @@ const Wallpaper = new Lang.Class({
                 list.push(duplicate);
             }
         } else { // If not shuffle set the list so that first wallpaper is the last loaded
-	    let image_index = this._settings.getImageIndex();
-	    for (i = 0; i <= image_index; i++) {
-		let image = list.shift();
-		list.push(image);
+			let image_index = this._settings.getImageIndex();
+			for (i = 0; i <= image_index; i++) {
+			let image = list.shift();
+			list.push(image);
 	    }
 	}
         // Append to queue:
@@ -178,7 +178,7 @@ const Wallpaper = new Lang.Class({
 	    this._settings.setImageIndex((image_index + 1) % list_size);
 	}
         // Check if there where any items left in the stack:
-        if (this._image_queue.length <= 1){
+        if (this._image_queue.length <= 2){
             this._loadQueue(); // Load new wallpapers
         }
         let wallpaper = this._image_queue.shift();

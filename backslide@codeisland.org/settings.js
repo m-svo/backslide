@@ -228,23 +228,31 @@ const Settings = new Lang.Class({
     },
 
     getImageIndex: function(){
-        return this._setting.get_int(KEY_IMAGE_INDEX);
+        try {
+            return this._setting.get_int(KEY_IMAGE_INDEX);
+        } catch (e) {
+            return 0;
+        }
     },
 
     setImageIndex: function(index){
-	// Validate:
-        if (index === undefined || index === null || typeof index != "number" || index < 0){
-            throw TypeError("'index' needs to be a number, greater than 0. Given: "+index);
-        }
-        // Write:
-        if (this._setting.is_writable(KEY_IMAGE_INDEX)){
-            if (this._setting.set_int(KEY_IMAGE_INDEX, index)){
-                Gio.Settings.sync();
-            } else {
-                throw this._errorSet(key);
+        try {
+            // Validate:
+            if (index === undefined || index === null || typeof index != "number" || index < 0){
+                throw TypeError("'index' needs to be a number, greater than 0. Given: "+index);
             }
-        } else {
-            throw this._errorWritable(key);
+            // Write:
+            if (this._setting.is_writable(KEY_IMAGE_INDEX)){
+                if (this._setting.set_int(KEY_IMAGE_INDEX, index)){
+                    Gio.Settings.sync();
+                } else {
+                    throw this._errorSet(key);
+                }
+            } else {
+                throw this._errorWritable(key);
+            }
+        } catch (e) {
+            global.logError(e);
         }
     },
 
