@@ -205,7 +205,7 @@ const Settings = new Lang.Class({
         if (this._background_setting.is_writable(key)){
             // Set a new Background-Image (should show up immediately):
             if (this._background_setting.set_string(key, "file://"+path) ){
-                Gio.Settings.sync(); // Necessary: http://stackoverflow.com/questions/9985140
+                //Gio.Settings.sync(); // Necessary: http://stackoverflow.com/questions/9985140
             } else {
                 throw this._errorSet(key);
             }
